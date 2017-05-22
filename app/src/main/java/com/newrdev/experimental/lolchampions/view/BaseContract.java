@@ -6,11 +6,11 @@ package com.newrdev.experimental.lolchampions.view;
 
 public interface BaseContract {
 
-    interface View<T> {
-        void setPresenter(T presenter);
+    interface View {
     }
 
-    interface Presenter {
-
+    interface Presenter<T> {
+        void bind(T view);
+        void unbind();
     }
 }

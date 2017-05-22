@@ -12,13 +12,18 @@ import io.reactivex.Single;
  */
 
 public class ChampionRepository implements ChampionSource {
+    private static Single<List<Champion>> champions;
 
     @Override
     public Single<List<Champion>> getAll() {
-        return Api.Client.getInstance()
-                .getChampions()
-                .flatMapIterable(ChampionsResponse::getChampions)
-                .toList();
 
+        if (champions == null) {
+            champions = Api.Client.getInstance()
+                    .getChampions()
+                    .flatMapIterable(ChampionsResponse::getChampions)
+                    .toList();
+        }
+
+        return champions;
     }
 }
