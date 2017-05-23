@@ -2,6 +2,7 @@ package com.newrdev.experimental.lolchampions.data.net;
 
 import com.newrdev.experimental.lolchampions.data.entity.Champion;
 import com.newrdev.experimental.lolchampions.data.entity.ChampionsResponse;
+import com.newrdev.experimental.lolchampions.util.Constants;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public interface Api {
             // Create service
             // https://na1.api.riotgames.com/lol/static-data/v3/champions?champListData=all&dataById=true&api_key=d3e17416-2f31-459e-88b5-c231d8799816
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("https://na1.api.riotgames.com/lol/")
+                    .baseUrl(Constants.API_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 //                .client(client)
