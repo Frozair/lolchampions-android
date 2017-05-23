@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.newrdev.experimental.lolchampions.R;
 import com.newrdev.experimental.lolchampions.data.entity.Champion;
+import com.newrdev.experimental.lolchampions.util.Constants;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -21,8 +23,14 @@ import butterknife.ButterKnife;
 
 public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.ViewHolder> {
     private List<Champion> championList;
+    private ChampionsContract.View championsView;
 
-    public ChampionsAdapter(List<Champion> championList) {
+    public ChampionsAdapter(List<Champion> championList, ChampionsContract.View championsView) {
+        this.championList = championList;
+        this.championsView = championsView;
+    }
+
+    public void setChampions(List<Champion> championList) {
         this.championList = championList;
     }
 
@@ -40,6 +48,12 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
         Champion champion = championList.get(position);
 
         holder.name.setText(champion.getName());
+
+        Picasso.with(holder.image.getContext())
+                .load(Constants.CHAMPION_IMAGE_URL + champion.getImage().getFull())
+                .into(holder.image);
+
+        holder.champion = champion;
     }
 
     @Override
@@ -47,15 +61,24 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
         return championList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.image)
         ImageView image;
         @BindView(R.id.name)
         TextView name;
 
+        private Champion champion;
+
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            ChampionsAdapter.this.championsView.showChampionDetails(champion);
         }
     }
 }

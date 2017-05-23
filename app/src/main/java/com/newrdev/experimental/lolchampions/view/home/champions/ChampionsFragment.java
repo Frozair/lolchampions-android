@@ -4,7 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
+
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +49,7 @@ public class ChampionsFragment extends Fragment implements ChampionsContract.Vie
 
         recyclerView.setHasFixedSize(true);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
         return view;
     }
@@ -71,10 +72,17 @@ public class ChampionsFragment extends Fragment implements ChampionsContract.Vie
     @Override
     public void showChampions(List<Champion> champions) {
         if (adapter == null) {
-            adapter = new ChampionsAdapter(champions);
+            adapter = new ChampionsAdapter(champions, this);
+        } else {
+            adapter.setChampions(champions);
+            adapter.notifyDataSetChanged();
         }
 
         recyclerView.setAdapter(adapter);
-        System.out.println("Showing champs?");
+    }
+
+    @Override
+    public void showChampionDetails(Champion champion) {
+        System.out.println("Champion clicked: " + champion.getName());
     }
 }

@@ -20,5 +20,6 @@ public interface ChampionsContract {
 
         void showChampions(List<Champion> champions);
 
+        void showChampionDetails(Champion champion);
     }
 }
