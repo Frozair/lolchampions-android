@@ -1,5 +1,8 @@
 package com.newrdev.experimental.lolchampions.data.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -7,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by rudolph on 5/17/17.
  */
 
-public class Champion {
+public class Champion implements Parcelable {
     @SerializedName("image")
     @Expose
     private Image image;
@@ -64,4 +67,38 @@ public class Champion {
         this.name = name;
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(this.image, flags);
+        dest.writeString(this.title);
+        dest.writeInt(this.id);
+        dest.writeString(this.key);
+        dest.writeString(this.name);
+    }
+
+    protected Champion(Parcel in) {
+        this.image = in.readParcelable(Image.class.getClassLoader());
+        this.title = in.readString();
+        this.id = in.readInt();
+        this.key = in.readString();
+        this.name = in.readString();
+    }
+
+    public static final Parcelable.Creator<Champion> CREATOR = new Parcelable.Creator<Champion>() {
+        @Override
+        public Champion createFromParcel(Parcel source) {
+            return new Champion(source);
+        }
+
+        @Override
+        public Champion[] newArray(int size) {
+            return new Champion[size];
+        }
+    };
 }
